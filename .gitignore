@@ -1,0 +1,6 @@
+.ipynb_*
+discard/
+groove/
+hvo_sequence/
+preprocessed_dataset/
+.DS_Store
