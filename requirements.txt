@@ -1,0 +1,5 @@
+keras
+matplotlib
+numpy
+pretty_midi
+scikit_learn
