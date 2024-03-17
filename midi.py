@@ -2,9 +2,9 @@ import pretty_midi
 import os
 import pickle
 
-midi_quantized_dir = 'midi_quantized/'
-midi_humanized_dir = 'midi_humanized/'
-midi_humanized_pred_dir = 'midi_humanized_pred/'
+midi_quantized_dir = 'outputs/midi_quantized/'
+midi_humanized_dir = 'outputs/midi_humanized/'
+midi_humanized_pred_dir = 'outputs/midi_humanized_pred/'
 os.makedirs(midi_quantized_dir, exist_ok=True)
 os.makedirs(midi_humanized_dir, exist_ok=True)
 os.makedirs(midi_humanized_pred_dir, exist_ok=True)
@@ -48,22 +48,22 @@ def hits_to_midi_humanized(hits_2bar, velocities_2bar, offsets_2bar, filename):
     pm.write(filename)
 
 # Read the hits, velocities, and offsets from the pickle file
-with open('hits_orig.pkl', 'rb') as f:
+with open('outputs/hits_orig.pkl', 'rb') as f:
     hits = pickle.load(f)
-with open('velocities_orig.pkl', 'rb') as f:
+with open('outputs/velocities_orig.pkl', 'rb') as f:
     velocities = pickle.load(f)
-with open('offsets_orig.pkl', 'rb') as f:
+with open('outputs/offsets_orig.pkl', 'rb') as f:
     offsets = pickle.load(f)
 
 # Read the predicted velocities and offsets from the pickle file
-with open('velocities_pred.pkl', 'rb') as f:
+with open('outputs/velocities_pred.pkl', 'rb') as f:
     velocities_pred = pickle.load(f)
     # Set negative values to 0
     velocities_pred[velocities_pred < 0] = 0
     # Set values greater than 1 to 1
     velocities_pred[velocities_pred > 1] = 1
 
-with open('offsets_pred.pkl', 'rb') as f:
+with open('outputs/offsets_pred.pkl', 'rb') as f:
     offsets_pred = pickle.load(f)
 
 count=1

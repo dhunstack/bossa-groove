@@ -1,12 +1,12 @@
 # Feedforward neural network to predict the drum velocities and offsets given the drum hits
 # The dataset is present in the hits.pkl, velocities.pkl and offsets.pkl files
 # Need to load the dataset and train the model
-# The model is saved in the model.pkl file
-# The model is a feedforward neural network with 1 hidden layer of 256 neurons
+# The model is saved in the model.keras file
+# The model is a feedforward neural network with 2 hidden layers of 512 neurons each
 # The input layer has 279 neurons, binary encoding of 9 drum hits with 31 time steps
 # The output layer has 558 neurons, 9 drum velocities and 9 drum offsets with 31 time steps
 # The model is trained using the Adam optimizer and Mean Squared Error loss function
-# The model is trained for 100 epochs with a batch size of 32
+# The model is trained for 30 epochs with a batch size of 50
 
 import numpy as np
 import pickle
@@ -16,9 +16,9 @@ from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 
 # Load the dataset
-hits = pickle.load(open('hits.pkl', 'rb'))
-velocities = pickle.load(open('velocities.pkl', 'rb'))
-offsets = pickle.load(open('offsets.pkl', 'rb'))
+hits = pickle.load(open('data/hits.pkl', 'rb'))
+velocities = pickle.load(open('data/velocities.pkl', 'rb'))
+offsets = pickle.load(open('data/offsets.pkl', 'rb'))
 
 # Filter the dataset
 hits_flat = [h.flatten() for h in hits if h.shape[0] == 31]
@@ -51,7 +51,7 @@ model.compile(optimizer='Adam', loss='mse')
 summary = model.fit(X_train, y_train, batch_size = 50, epochs = 30, validation_split=0.2, verbose=1)
 
 # Save the model
-model.save('model.keras')
+model.save('models/model.keras')
 
 # Evaluate the model
 score_test = model.evaluate(X_test, y_test, verbose = 0)
@@ -63,11 +63,11 @@ velocities_pred = y_pred[:, :279]
 offsets_pred = y_pred[:, 279:]
 
 # Save the required data
-pickle.dump(X.reshape((len(X), 31, 9)), open('hits_orig.pkl', 'wb'))
-pickle.dump(y1.reshape((len(X), 31, 9)), open('velocities_orig.pkl', 'wb'))
-pickle.dump(y2.reshape((len(X), 31, 9)), open('offsets_orig.pkl', 'wb'))
-pickle.dump(velocities_pred.reshape((len(y_pred), 31, 9)), open('velocities_pred.pkl', 'wb'))
-pickle.dump(offsets_pred.reshape((len(y_pred), 31, 9)), open('offsets_pred.pkl', 'wb'))
+pickle.dump(X.reshape((len(X), 31, 9)), open('outputs/hits_orig.pkl', 'wb'))
+pickle.dump(y1.reshape((len(X), 31, 9)), open('outputs/velocities_orig.pkl', 'wb'))
+pickle.dump(y2.reshape((len(X), 31, 9)), open('outputs/offsets_orig.pkl', 'wb'))
+pickle.dump(velocities_pred.reshape((len(y_pred), 31, 9)), open('outputs/velocities_pred.pkl', 'wb'))
+pickle.dump(offsets_pred.reshape((len(y_pred), 31, 9)), open('outputs/offsets_pred.pkl', 'wb'))
 
 # summarize history for loss
 plt.plot(summary.history['loss'])
